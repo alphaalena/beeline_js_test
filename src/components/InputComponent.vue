@@ -49,7 +49,6 @@ export default {
     scroll () {
       setTimeout(() => {
         const messageArea = document.body.querySelector('.message-area')
-        console.log(messageArea, messageArea.scrollTop)
         messageArea.scrollTop += 500
       }, 50)
     },

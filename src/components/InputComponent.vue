@@ -1,7 +1,7 @@
 <template>
   <div class="input">
     <label class="field-label">
-      <input type="text" class="field" v-model="inputMessage">
+      <input type="text" class="field" v-model="inputMessage" @keyup.enter="onButtonClick()">
     </label>
     <div v-if="botIsWriting" class="is-writing">
       <div class="dot"></div>
@@ -19,7 +19,9 @@ export default {
     return {
       inputMessage: '',
       botIsWriting: false,
-      isSendStart: false
+      isSendStart: false,
+      first: null,
+      second: null
     }
   },
   methods: {
@@ -39,16 +41,78 @@ export default {
         this.botStopWritingText()
       }, 500)
     },
+    setNumbers (first, second) {
+      this.first = first
+      this.second = second
+    },
     onButtonClick () {
+      let triggered = false
+      const clear = () => (this.inputMessage = '')
+
       this.sendText(this.inputMessage)
       if (this.inputMessage === '/start') {
         this.isSendStart = true
+        triggered = true
         this.botSendText('Привет, меня зовут Чат-бот, а как зовут тебя?».')
       }
-      if (this.isSendStart === false) {
+
+      const s = this.isSendStart
+
+      const nameMatch = this.inputMessage.match(/\/name: ?([a-zа-я]+)$/ui)
+      if (nameMatch && s) {
+        triggered = true
+        this.botSendText(`Привет ${nameMatch[1]}, приятно познакомится. Я умею считать, введи числа которые надо посчитать`)
+      }
+
+      const numMatch = this.inputMessage.match(/\/number: ?([0-9]+), ?([0-9]+)/)
+      if (numMatch && s) {
+        triggered = true
+        this.setNumbers(numMatch[1], numMatch[2])
+        this.botSendText('Введите действие: -, +, * или /')
+        clear()
+      }
+
+      const operationMatch = this.inputMessage.match(/[-+*/]/)
+      if (this.first !== null && this.second !== null && operationMatch && s) {
+        triggered = true
+        const printResult = (result) => {
+          this.botSendText(`Результат равен "${result}"`)
+          this.first = null
+          this.second = null
+        }
+        if (operationMatch[0] === '-') {
+          printResult(this.first - this.second)
+        }
+        if (operationMatch[0] === '+') {
+          printResult(this.first + this.second)
+        }
+        if (operationMatch[0] === '*') {
+          printResult(this.first * this.second)
+        }
+        if (operationMatch[0] === '/') {
+          if (this.second === 0) {
+            this.botSendText('На 0 делить нельзя!')
+          } else {
+            printResult(this.first / this.second)
+          }
+        }
+      }
+
+      if (this.inputMessage === '/stop' && s) {
+        triggered = true
+        this.botSendText('Всего доброго, если хочешь поговорить пиши /start')
+        this.isSendStart = false
+      }
+
+      if (s === true && triggered === false) {
+        this.botSendText('Я не понимаю, введите другую команду!')
+      }
+
+      if (s === false) {
         this.botSendText('Введите команду /start, для начала общения')
       }
-      this.inputMessage = ''
+
+      clear()
     }
   }
 }

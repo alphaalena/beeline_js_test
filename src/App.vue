@@ -19,5 +19,11 @@ export default {
 </script>
 
 <style lang="scss">
-
+  .chat {
+    @media screen and (max-width: 375px) {
+      height: 100vh;
+      display: flex;
+      flex-direction: column;
+    }
+  }
 </style>

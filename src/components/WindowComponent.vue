@@ -1,8 +1,9 @@
 <template>
   <div class="window">
     <input-component/>
-    <message-component image-url="/images/he.svg" :text="getText()"/>
-    <message-component image-url="/images/me.svg" is-mine :text="getText2()"/>
+    <div class="message-area">
+      <message-component v-for="message in getMessages(20)" :key="message.id" :image-url="message.imageUrl" :is-mine="message.isMine" :text="message.text"/>
+    </div>
   </div>
 </template>
 
@@ -17,11 +18,17 @@ export default {
     MessageComponent
   },
   methods: {
-    getText () {
-      return 'Далеко-далеко за словесными горами в стране гласных и согласных живут рыбные тексты. Вдали от всех живут они в буквенных домах'
-    },
-    getText2 () {
-      return 'Далеко-далеко'
+    getMessages (count) {
+      const messages = []
+      for (let i = 0; i < count; i++) {
+        messages.push({
+          id: i,
+          imageUrl: i % 2 === 0 ? '/images/he.svg' : '/images/me.svg',
+          text: i % 2 === 0 ? 'Далеко-далеко за словесными горами в стране гласных и согласных живут рыбные тексты. Вдали от всех живут они в буквенных домах' : 'Далеко-далеко',
+          isMine: i % 2 === 0
+        })
+      }
+      return messages
     }
   }
 }
@@ -33,9 +40,16 @@ export default {
     flex-direction: column-reverse;
     max-width: 700px;
     min-height: 766px;
+    max-height: 766px;
     border: 1px solid #EDEDED;
     border-radius: 37.5px;
     background-color: #282828;
     padding: 0 40px 40px 40px;
+    @media screen and (max-width: 375px) {
+      border: none;
+      flex: 1;
+      padding: 0;
+      max-height: none;
+    }
   }
 </style>

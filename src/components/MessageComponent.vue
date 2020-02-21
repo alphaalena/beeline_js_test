@@ -23,9 +23,26 @@ export default {
     display: flex;
     min-height: 70px;
     margin-top: 30px;
+    &:last-child {
+      margin-bottom: 30px;
+    }
+    @media screen and (max-width: 375px) {
+      padding-left: 20px;
+      padding-right: 20px;
+      &-area {
+        margin-bottom: 64px;
+        margin-top: 64px;
+      }
+    }
     &.is-mine {
       .text {
         background-color: #F1F0F0;
+      }
+    }
+    &-area {
+      overflow-y: auto;
+      &::-webkit-scrollbar {
+        display: none;
       }
     }
   }

@@ -39,11 +39,19 @@ export default {
       setTimeout(() => {
         this.$emit('bot-send', text)
         this.botStopWritingText()
-      }, 500)
+        this.scroll()
+      }, 1200)
     },
     setNumbers (first, second) {
       this.first = first
       this.second = second
+    },
+    scroll () {
+      setTimeout(() => {
+        const messageArea = document.body.querySelector('.message-area')
+        console.log(messageArea, messageArea.scrollTop)
+        messageArea.scrollTop += 500
+      }, 50)
     },
     onButtonClick () {
       let triggered = false

@@ -1,8 +1,8 @@
 <template>
   <div class="window">
-    <input-component/>
+    <input-component @send="sendMessage" @bot-send="sendBotMessage"/>
     <div class="message-area">
-      <message-component v-for="message in getMessages(20)" :key="message.id" :image-url="message.imageUrl" :is-mine="message.isMine" :text="message.text"/>
+      <message-component v-for="message in messages" :key="message.id" :image-url="message.imageUrl" :is-mine="message.isMine" :text="message.text"/>
     </div>
   </div>
 </template>
@@ -17,6 +17,12 @@ export default {
     InputComponent,
     MessageComponent
   },
+  data () {
+    return {
+      messages: [],
+      currentId: 0
+    }
+  },
   methods: {
     getMessages (count) {
       const messages = []
@@ -29,6 +35,22 @@ export default {
         })
       }
       return messages
+    },
+    sendMessage (text) {
+      this.messages.push({
+        id: this.currentId++,
+        imageUrl: '/images/me.svg',
+        isMine: true,
+        text: text
+      })
+    },
+    sendBotMessage (text) {
+      this.messages.push({
+        id: this.currentId++,
+        imageUrl: '/images/he.svg',
+        isMine: true,
+        text: text
+      })
     }
   }
 }

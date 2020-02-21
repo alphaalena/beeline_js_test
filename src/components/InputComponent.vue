@@ -22,6 +22,7 @@ export default {
     background-color: #F3F3F3;
     border-radius: 32px;
     padding: 14px 30px;
+    margin-top: 30px;
 
   }
   .send {

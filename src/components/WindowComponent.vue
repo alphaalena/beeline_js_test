@@ -1,16 +1,28 @@
 <template>
   <div class="window">
     <input-component/>
+    <message-component image-url="/images/he.svg" :text="getText()"/>
+    <message-component image-url="/images/me.svg" is-mine :text="getText2()"/>
   </div>
 </template>
 
 <script>
 import InputComponent from './InputComponent'
+import MessageComponent from './MessageComponent'
 
 export default {
   name: 'window-component',
   components: {
-    InputComponent
+    InputComponent,
+    MessageComponent
+  },
+  methods: {
+    getText () {
+      return 'Далеко-далеко за словесными горами в стране гласных и согласных живут рыбные тексты. Вдали от всех живут они в буквенных домах'
+    },
+    getText2 () {
+      return 'Далеко-далеко'
+    }
   }
 }
 </script>

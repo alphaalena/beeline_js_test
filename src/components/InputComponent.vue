@@ -1,15 +1,20 @@
 <template>
   <div class="input">
     <label class="field-label">
-      <input type="text" class="field">
+      <input type="text" class="field" v-model="inputMessage">
     </label>
-    <button class="send"/>
+    <button class="send" :disabled="inputMessage.length === 0"/>
   </div>
 </template>
 
 <script>
 export default {
-  name: 'input-component'
+  name: 'input-component',
+  data () {
+    return {
+      inputMessage: ''
+    }
+  }
 }
 </script>
 
@@ -33,6 +38,10 @@ export default {
     background: url('../assets/svg/send.svg');
     width: 40px;
     height: 35px;
+    transition: 0.5s;
+    &[disabled] {
+      filter: grayscale(100%) contrast(20%);
+    }
   }
   .field {
     background-color: #F3F3F3;
